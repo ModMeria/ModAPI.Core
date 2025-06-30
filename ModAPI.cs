@@ -5,7 +5,7 @@ using ModAPI.Config;
 using PocketBlocks.Items;
 using PocketBlocks.Items.Crafting;
 
-namespace ModAPI
+namespace ModAPI.Core
 {
     public class ModApi : IModApi
     {

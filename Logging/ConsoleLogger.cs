@@ -1,6 +1,6 @@
 using ModAPI.Abstractions.Logging;
 
-namespace ModAPI.Logging
+namespace ModAPI.Core.Logging
 {
     public class ConsoleLogger : ILogger
     {
