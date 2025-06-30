@@ -5,6 +5,7 @@ namespace ModAPI.Core.Logging
     public class ConsoleLogger : ILogger
     {
         private readonly string _modName;
+        private readonly TextWriter _defaultOut = Console.Out;
 
         public ConsoleLogger(string modName)
         {
@@ -13,6 +14,8 @@ namespace ModAPI.Core.Logging
         
         private void Log(string level, ConsoleColor color, string message)
         {
+            TextWriter writer = Console.Out;
+            Console.SetOut(_defaultOut);
             string currentTime = DateTime.Now.ToString("HH:mm:ss.fff");
 
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -22,6 +25,7 @@ namespace ModAPI.Core.Logging
             Console.WriteLine($"[{level}]  [{_modName}]    {message}");
 
             Console.ResetColor();
+            Console.SetOut(writer);
         }
         
         public void Info(string message)  => Log("INFO", ConsoleColor.White, message);

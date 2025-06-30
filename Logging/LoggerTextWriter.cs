@@ -6,19 +6,13 @@ namespace ModAPI.Core.Logging
     {
         private readonly ConsoleLogger _logger = new ConsoleLogger("Allumeria");
         
-        private readonly TextWriter _defaultOut = Console.Out;
-        
         public override Encoding Encoding => Encoding.UTF8;
         
         public override void WriteLine(string? value)
         {
             if (!string.IsNullOrEmpty(value))
             {
-                Console.SetOut(_defaultOut);
-                
                 _logger.Info($"{value}");
-                
-                Console.SetOut(this);
             }
         }
         
@@ -26,11 +20,7 @@ namespace ModAPI.Core.Logging
         {
             if (!string.IsNullOrEmpty(value) && value.EndsWith('\n'))
             {
-                Console.SetOut(_defaultOut);
-                
                 _logger.Info($"{value.TrimEnd()}");
-                
-                Console.SetOut(this);
             }
         }
     }
