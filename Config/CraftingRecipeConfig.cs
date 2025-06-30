@@ -2,7 +2,7 @@ using ModAPI.Abstractions.Config;
 using PocketBlocks.Items;
 using PocketBlocks.Items.Crafting;
 
-namespace ModAPI.Config
+namespace ModAPI.Core.Config
 {
     public class CraftingRecipeConfig : ICraftingRecipeConfig
     {

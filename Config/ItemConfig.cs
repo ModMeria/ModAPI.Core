@@ -1,6 +1,6 @@
 using ModAPI.Abstractions.Config;
 
-namespace ModAPI.Config
+namespace ModAPI.Core.Config
 {
     public class ItemConfig : IItemConfig
     {

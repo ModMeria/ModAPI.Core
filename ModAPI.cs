@@ -1,7 +1,7 @@
 using HarmonyLib;
 using ModAPI.Abstractions;
 using ModAPI.Abstractions.Config;
-using ModAPI.Config;
+using ModAPI.Core.Config;
 using PocketBlocks.Items;
 using PocketBlocks.Items.Crafting;
 
