@@ -1,24 +1,29 @@
 using HarmonyLib;
 using ModAPI.Abstractions;
 using ModAPI.Abstractions.Config;
-using ModAPI.Core.Config;
+using ModAPI.Abstractions.Items;
+using ModAPI.Abstractions.Items.Crafting;
 using PocketBlocks.Items;
 using PocketBlocks.Items.Crafting;
+using ItemConfig = ModAPI.Abstractions.Config.ItemConfig;
 
 namespace ModAPI.Core
 {
     public class ModApi : IModApi
     {
-        private static List<ICraftingRecipeConfig> _iCraftingRecipes = new List<ICraftingRecipeConfig>();
-        public static Dictionary<string, Item> Items = new Dictionary<string, Item>();
+        private static List<CraftingRecipeConfig> _craftingRecipes = new List<CraftingRecipeConfig>();
+        public static Dictionary<string, ModItem> Items = new Dictionary<string, ModItem>();
         public static ModApi Api = new ModApi();
         
-        public void RegisterItem(IItemConfig config)
+        public void RegisterItem(ItemConfig config)
         {
             if (config.Id != null)
             {
                 var item = new Item(config.TextureX, config.TextureY, config.Id);
-                Items[config.Id] = item;
+
+                var mod_item = new ModItem(item.itemID);
+                
+                Items[config.Id] = mod_item;
             }
             else
             {
@@ -26,11 +31,11 @@ namespace ModAPI.Core
             }
         }
 
-        public void RegisterCraftingRecipe(ICraftingRecipeConfig config)
+        public void RegisterCraftingRecipe(CraftingRecipeConfig config)
         {
             if (config.Result != null)
             {
-                _iCraftingRecipes.Add(config);
+                _craftingRecipes.Add(config);
             }
         }
         
@@ -86,6 +91,46 @@ namespace ModAPI.Core
 
             Console.WriteLine($"[ModMeria] Added translation for {id}");
         }
+
+        public bool TryGetItem(string id, out ModItem item)
+        {
+            return Items.TryGetValue(id, out item);
+        }
+
+        private static ItemStack MakeItemStackFromMod(ModItemStack stack)
+        {
+            return new ItemStack(Item.GetItemByID(stack.GetItem().id), stack.amount);
+        }
+
+        private static CraftingStation MakeCraftingStationFromMod(ModCraftingStation station)
+        {
+            switch (station.StrId)
+            {
+                case nameof(CraftingStation.inventory):
+                    return CraftingStation.inventory;
+                case nameof(CraftingStation.work_bench):
+                    return CraftingStation.work_bench;
+                case nameof(CraftingStation.furnace):
+                    return CraftingStation.furnace;
+                case nameof(CraftingStation.anvil):
+                    return CraftingStation.anvil;
+                case nameof(CraftingStation.decorations):
+                    return CraftingStation.decorations;
+                case nameof(CraftingStation.potions):
+                    return CraftingStation.potions;
+                default:
+                    return new CraftingStation(station.StrId);
+            }
+        }
+
+        private static Item MakeItemFromMod(ModItem item)
+        {
+            return Item.GetItemByID(item.id);
+        }
+        private static RecipeEntry MakeRecipeEntryFromMod(ModRecipeEntry entry)
+        {
+            return new RecipeEntry(MakeItemFromMod(entry.item), entry.amount);
+        }
         
         [HarmonyPatch(typeof(CraftingRecipe))]
         [HarmonyPatch("InitCraftingRecipes")]
@@ -93,14 +138,16 @@ namespace ModAPI.Core
         {
             public static void Postfix()
             {
-                foreach (var recipe in _iCraftingRecipes)
+                foreach (var recipe in _craftingRecipes)
                 {
                     if (recipe.Result != null)
                     {
-                        var craftingRecipe = new CraftingRecipe(recipe.Result, recipe.CraftingStation);
+                        ItemStack result = MakeItemStackFromMod(recipe.Result);
+                        CraftingStation station = MakeCraftingStationFromMod(recipe.CraftingStation);
+                        var craftingRecipe = new CraftingRecipe(result, station);
                         foreach (var recipeEntry in recipe.Recipe)
                         {
-                            craftingRecipe.AddReq(recipeEntry);
+                            craftingRecipe.AddReq(MakeRecipeEntryFromMod(recipeEntry));
                         }
                     }
                 }
