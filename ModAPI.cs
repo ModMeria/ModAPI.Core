@@ -31,11 +31,6 @@ namespace ModAPI.Core
             return new Vector3(0f, 0f, 0f);
         }
 
-        public void RegisterItem(IItemConfig config)
-        {
-            throw new NotImplementedException();
-        }
-
         public void RegisterCraftingRecipe(CraftingRecipeConfig config)
         {
             if (config.Result != null)
