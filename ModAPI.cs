@@ -1,34 +1,39 @@
+using System.Numerics;
 using HarmonyLib;
 using ModAPI.Abstractions;
 using ModAPI.Abstractions.Config;
 using ModAPI.Abstractions.Items;
 using ModAPI.Abstractions.Items.Crafting;
+using ModAPI.Core.Registry.Items;
+using ModAPI.Core.Registry.Textures;
 using PocketBlocks.Items;
 using PocketBlocks.Items.Crafting;
-using ItemConfig = ModAPI.Abstractions.Config.ItemConfig;
+using StbImageSharp;
+using ItemConfig = ModAPI.Core.Config.ItemConfig;
 
 namespace ModAPI.Core
 {
     public class ModApi : IModApi
     {
         private static List<CraftingRecipeConfig> _craftingRecipes = new List<CraftingRecipeConfig>();
-        public static Dictionary<string, ModItem> Items = new Dictionary<string, ModItem>();
+        public static ItemRegistry ItemRegistry = ItemRegistry.Registry;
         public static ModApi Api = new ModApi();
-        
+        private static ItemTextureRegistry itemTextureRegistry = new ItemTextureRegistry();
         public void RegisterItem(ItemConfig config)
         {
-            if (config.Id != null)
-            {
-                var item = new Item(config.TextureX, config.TextureY, config.Id);
+            var item = new ModItem(1234, config); // ID is not real, that's in Register()
+            ItemRegistry.Register(config.Id, item);
+        }
 
-                var mod_item = new ModItem(item.itemID);
-                
-                Items[config.Id] = mod_item;
-            }
-            else
-            {
-                Console.WriteLine("[ModMeria] WARNING: Tried to register an item with null ID.");
-            }
+        public Vector3 RegisterTexture(ImageResult imageResult)
+        {
+            itemTextureRegistry.Register(imageResult);
+            return new Vector3(0f, 0f, 0f);
+        }
+
+        public void RegisterItem(IItemConfig config)
+        {
+            throw new NotImplementedException();
         }
 
         public void RegisterCraftingRecipe(CraftingRecipeConfig config)
@@ -94,7 +99,7 @@ namespace ModAPI.Core
 
         public bool TryGetItem(string id, out ModItem item)
         {
-            return Items.TryGetValue(id, out item);
+            return ItemRegistry.TryGet(id, out item);
         }
 
         private static ItemStack MakeItemStackFromMod(ModItemStack stack)
