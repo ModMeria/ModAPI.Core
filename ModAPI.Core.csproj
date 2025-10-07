@@ -10,8 +10,8 @@
     <ProjectReference Include="../ModAPI.Abstractions/ModAPI.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="PocketBlocks">
-      <HintPath>../PocketBlocks.dll</HintPath>
+    <Reference Include="Allumeria">
+      <HintPath>..\Allumeria.dll</HintPath>
     </Reference>
   </ItemGroup>
   

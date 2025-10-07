@@ -6,10 +6,11 @@ using ModAPI.Abstractions.Items;
 using ModAPI.Abstractions.Items.Crafting;
 using ModAPI.Core.Registry.Items;
 using ModAPI.Core.Registry.Textures;
-using PocketBlocks.Items;
-using PocketBlocks.Items.Crafting;
+using Allumeria.Items;
+using Allumeria.Items.Crafting;
 using StbImageSharp;
 using ItemConfig = ModAPI.Core.Config.ItemConfig;
+using System.Reflection;
 
 namespace ModAPI.Core
 {
@@ -19,8 +20,19 @@ namespace ModAPI.Core
         public static ItemRegistry ItemRegistry = ItemRegistry.Registry;
         public static ModApi Api = new ModApi();
         private static ItemTextureRegistry itemTextureRegistry = new ItemTextureRegistry();
+
+        public void Init()
+        {
+            var harmony = new Harmony("modmeria.modapi.core");
+
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+            RegisterItem(new ItemConfig(Api, "debug-item").SetTexture(0, 0).SetItemTranslation("Debug Item"));
+        }
+
         public void RegisterItem(ItemConfig config)
         {
+            // TODO: Better solution for this.
             var item = new ModItem(1234, config); // ID is not real, that's in Register()
             ItemRegistry.Register(config.Id, item);
         }
@@ -39,8 +51,8 @@ namespace ModAPI.Core
             }
         }
         
-        private static string _translationPath = "res/translations/en_au.txt";
-
+        private static readonly string _translationPath = "res/translations/en-AU/keys.txt";
+        // TODO: Add translations for other languages too.
         public void AddTranslation(string id, string translatedName)
         {
             var lines = File.ReadAllLines(_translationPath);
@@ -53,7 +65,7 @@ namespace ModAPI.Core
             }
             else
             {
-                lines.AddToArray($"{id} {translatedName}");
+                lines = lines.AddToArray($"{id} {translatedName}");
             }
             
             File.WriteAllLines(_translationPath, lines);

@@ -1,14 +1,14 @@
 using HarmonyLib;
 using ModAPI.Abstractions.Items;
 using ModAPI.Core.Registry.Items;
-using PocketBlocks;
-using PocketBlocks.ChunkManagement;
-using PocketBlocks.EntitySystem.Components;
-using PocketBlocks.Input;
-using PocketBlocks.Items;
-using PocketBlocks.UI;
-using PocketBlocks.UI.Menus;
-using PocketBlocks.Rendering;
+using Allumeria;
+using Allumeria.ChunkManagement;
+using Allumeria.EntitySystem.Components;
+using Allumeria.Input;
+using Allumeria.Items;
+using Allumeria.UI;
+using Allumeria.UI.Menus;
+using Allumeria.Rendering;
 
 namespace ModAPI.Core.Rendering;
 

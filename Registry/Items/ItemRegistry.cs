@@ -1,6 +1,6 @@
 using ModAPI.Abstractions.Items;
 using ModAPI.Abstractions.Registry.Items;
-using PocketBlocks.Items;
+using Allumeria.Items;
 
 namespace ModAPI.Core.Registry.Items;
 

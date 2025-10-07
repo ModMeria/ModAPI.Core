@@ -1,6 +1,6 @@
 using System.Numerics;
 using ModAPI.Abstractions.Registry;
-using PocketBlocks.Rendering;
+using Allumeria.Rendering;
 using StbImageSharp;
 
 namespace ModAPI.Core.Registry.Textures;
