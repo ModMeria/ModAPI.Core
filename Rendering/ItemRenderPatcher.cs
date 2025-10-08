@@ -1,6 +1,5 @@
 using HarmonyLib;
 using ModAPI.Abstractions.Items;
-using ModAPI.Core.Registry.Items;
 using Allumeria;
 using Allumeria.ChunkManagement;
 using Allumeria.EntitySystem.Components;
@@ -9,6 +8,7 @@ using Allumeria.Items;
 using Allumeria.UI;
 using Allumeria.UI.Menus;
 using Allumeria.Rendering;
+using ModAPI.Core.Registries;
 
 namespace ModAPI.Core.Rendering;
 
