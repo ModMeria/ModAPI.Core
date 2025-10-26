@@ -1,4 +1,3 @@
-using Allumeria.Items;
 using HarmonyLib;
 using ModAPI.Abstractions;
 using ModAPI.Abstractions.Builders;
@@ -6,7 +5,8 @@ using ModAPI.Abstractions.Logging;
 using ModAPI.Abstractions.Registries;
 using ModAPI.Core.Registries;
 using System.Reflection;
-using ItemConfig = ModAPI.Abstractions.Builders.ItemConfig;
+using ModAPI.Core.Helpers;
+
 
 namespace ModAPI.Core
 {
@@ -27,6 +27,7 @@ namespace ModAPI.Core
         public ModApi()
         {
             _translations.Initialize(); 
+            AtlasHelper.InitItemTextures();
 
             var harmony = new Harmony("modmeria.modapi.core");
 
