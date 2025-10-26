@@ -133,6 +133,10 @@ namespace ModAPI.Core.Registries
         {
             return _translations.TryGetValue((locale, key), out value);
         }
+        public string Register(string item)
+        {
+            throw new NotImplementedException();
+        }
 
         public bool TryGet(string id, out string item)
         {
